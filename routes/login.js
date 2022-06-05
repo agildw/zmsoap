@@ -25,34 +25,41 @@ const goLogin = async (username, password) => {
     </soap:Envelope>`
 
     const { response } = await soapRequest({ url: url, headers: { 'Content-Type': 'text/xml;charset=UTF-8' }, xml: xml })
-    const { body, statusCode } = response;
+    const { body } = response;
     const re = new RegExp("<authToken(?:[^>]+class=\"(.*?)\"[^>]*)?>(.*?)<\/authToken>")
     let r = body.match(re);
+    console.log(body)
+    console.log('Ini run dari function')
     return r[2]
 }
 
+let errorInfo = ''
 
 router.use('/login', (req, res) => {
     // console.log(token)
-    console.log(store.get('zmtoken'))
-    res.render('login', { zmtoken: zmtoken })
+    // console.log(store.get('zmtoken'))
+    res.render('login', { error: errorInfo })
 })
 
 router.use('/dologin', async (req, res) => {
     // console.log(req.body);
     try {
         zmtoken = await goLogin(req.body.username, req.body.password)
-        store.set('zmtoken', zmtoken)
+        store.set('tokenUser', zmtoken);
+        store.set('emailUser', req.body.username)
+
+        // console.log(zmtoken)
+        res.redirect('/user/dashboard');
+        // res.redirect('/login');
+
     } catch (e) {
         console.log(e)
-        zmtoken = e
+        errorInfo = e
+        res.redirect('/login');
     }
 
-    res.redirect('/login');
+
 
 })
 
-router.use('/joji', (req, res) => {
-
-})
 module.exports = router
