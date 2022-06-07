@@ -1,7 +1,7 @@
 const express = require('express');
 const store = require('store');
 const soapRequest = require('easy-soap-request');
-
+const cheerio = require('cheerio');
 
 const router = express.Router();
 
@@ -40,13 +40,36 @@ router.use('/dashboard', async (req, res) => {
 
     try {
         const result = await getUserInfo(zmToken, mailUser);
-        console.log(result)
+        // console.log(result)
+        const $ = cheerio.load(result);
+        const displayName = $('attr').last().text()
+        res.render('userDB', { name: displayName })
     } catch (e) {
         console.log(e)
-        // res.redirect('/')
+        res.redirect('/')
         res.end()
     }
-    res.render('userDB', { name: 'aku' })
+
 })
 
+router.use('/info', async (req, res) => {
+    const zmToken = store.get('tokenUser');
+    const mailUser = store.get('emailUser');
+    try {
+        const result = await getUserInfo(zmToken, mailUser);
+        const $ = cheerio.load(result);
+        const displayName = $('attr').last().text();
+        const mail = $('name').text();
+        const zimbraId = $('attr').first().text()
+        const soapUrl = $('soapURL').text();
+        const publicUrl = $('publicURL').text();
+        const adminUrl = $('adminURL').text();
+
+        res.render('userInfo', { name: displayName, mail: mail, zimbraId: zimbraId, soapUrl: soapUrl, publicUrl: publicUrl, adminUrl: adminUrl })
+    } catch (e) {
+        console.log(e)
+        res.redirect('/user/dashboard')
+        res.end()
+    }
+})
 module.exports = router

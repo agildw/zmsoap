@@ -29,7 +29,7 @@ const goLogin = async (username, password) => {
     const re = new RegExp("<authToken(?:[^>]+class=\"(.*?)\"[^>]*)?>(.*?)<\/authToken>")
     let r = body.match(re);
     // console.log(body)
-    console.log('Ini run dari function')
+    // console.log('Ini run dari function')
     return r[2]
 }
 
@@ -62,4 +62,8 @@ router.use('/dologin', async (req, res) => {
 
 })
 
+router.use('/logout', (req, res) => {
+    store.remove('tokenUser');
+    res.redirect('/')
+})
 module.exports = router

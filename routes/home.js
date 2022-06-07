@@ -4,7 +4,11 @@ const router = express.Router();
 
 router.use('/', (req, res) => {
     // console.log(store.get('tokenUser'), 'Ini dari home')
-    res.send('<h1>G ada</h1>')
+    if (store.get('tokenUser') == undefined) {
+        res.redirect('/login')
+    } else {
+        res.send('<h1>G ada</h1>')
+    }
 })
 
 module.exports = router
