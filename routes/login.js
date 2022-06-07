@@ -64,6 +64,13 @@ router.use('/dologin', async (req, res) => {
 
 router.use('/logout', (req, res) => {
     store.remove('tokenUser');
+    store.remove('emailUser');
+    res.redirect('/')
+})
+
+router.use('/adminLogout', (req, res) => {
+    store.remove('adminToken');
+    store.remove('adminEmail');
     res.redirect('/')
 })
 module.exports = router
