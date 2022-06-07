@@ -9,7 +9,16 @@
 </head>
 
 <body>
-
+    <h3>Delete Account</h3>
+    <form action="/admin/deleteAccount" method="POST">
+        <input type="text" name="idAccount" placeholder="zimbra account id"><button type="submit">Go</button>
+    </form>
+    <p>
+        <%= error %>
+    </p>
+    <p>
+        <%= reason %>
+    </p>
 </body>
 
 </html>

@@ -143,11 +143,20 @@ router.use('/listDomain', async (req, res) => {
     }
 })
 
-router.use('/removeAccount', async (req, res) => {
+router.use('/deleteAccount', async (req, res) => {
     if (req.body.idAccount != undefined) {
-        res.render('deleteAccount')
+        try {
+            const zmToken = store.get('adminToken')
+            const result = await deleteAccount(zmToken, req.body.idAccount);
+            console.log(result)
+            res.render('deleteAccount', { error: 'Success delete account', reason: '' })
+        } catch (e) {
+            console.log(e)
+            res.render('deleteAccount', { error: 'Failed delete account', reason: e })
+
+        }
     } else {
-        res.render('deleteAccount')
+        res.render('deleteAccount', { error: '', reason: '' })
     }
 })
 module.exports = router
