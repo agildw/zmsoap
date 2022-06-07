@@ -28,7 +28,7 @@ const goLogin = async (username, password) => {
     const { body } = response;
     const re = new RegExp("<authToken(?:[^>]+class=\"(.*?)\"[^>]*)?>(.*?)<\/authToken>")
     let r = body.match(re);
-    console.log(body)
+    // console.log(body)
     console.log('Ini run dari function')
     return r[2]
 }

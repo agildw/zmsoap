@@ -3,6 +3,7 @@ const store = require('store');
 const soapRequest = require('easy-soap-request');
 
 
+
 const router = express.Router();
 
 
@@ -20,7 +21,6 @@ const getUserInfo = async (zmtoken, email) => {
     </soap:Envelope>`
 
     const headers = {
-        'Cookie': `ZM_AUTH_TOKEN=${zmtoken}`,
         'Content-Type': 'text/xml;charset=UTF-8',
         'SOAPAction': '"#GetAccountInfoRequest"'
     }
@@ -33,20 +33,8 @@ const getUserInfo = async (zmtoken, email) => {
     return body
 }
 
-router.use('/dashboard', async (req, res) => {
-    // res.send('Worked')
+router.use('/mail', (req, res) => {
     const zmToken = store.get('tokenUser');
-    const mailUser = store.get('emailUser');
 
-    try {
-        const result = await getUserInfo(zmToken, mailUser);
-        console.log(result)
-    } catch (e) {
-        console.log(e)
-        // res.redirect('/')
-        res.end()
-    }
-    res.render('userDB', { name: 'aku' })
+    res.send('Letsgoo')
 })
-
-module.exports = router
