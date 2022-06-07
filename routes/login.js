@@ -47,7 +47,7 @@ router.use('/dologin', async (req, res) => {
         zmtoken = await goLogin(req.body.username, req.body.password)
         store.set('tokenUser', zmtoken);
         store.set('emailUser', req.body.username)
-
+        errorInfo = ''
         // console.log(zmtoken)
         res.redirect('/user/dashboard');
         // res.redirect('/login');

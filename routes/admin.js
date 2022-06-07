@@ -84,18 +84,26 @@ const deleteAccount = async (token, idAccount) => {
 }
 
 router.use('/login', (req, res) => {
-    res.render('adminLogin');
+    res.render('adminLogin', { error: errorInfo });
 })
 
+let errorInfo = '';
 router.use('/doAdminLogin', async (req, res) => {
-    const result = await adminLogin(req.body.mail, req.body.password);
-    // console.log(result)
-    const $ = cheerio.load(result);
-    const zmToken = $('authToken').text();
-    // console.log(zmToken)
-    store.set('adminToken', zmToken);
-    store.set('adminEmail', req.body.mail);
-    res.redirect('/admin/dashboard')
+    try {
+        const result = await adminLogin(req.body.mail, req.body.password);
+        // console.log(result)
+        const $ = cheerio.load(result);
+        const zmToken = $('authToken').text();
+        // console.log(zmToken)
+        store.set('adminToken', zmToken);
+        store.set('adminEmail', req.body.mail);
+        errorInfo = ''
+        res.redirect('/admin/dashboard')
+    } catch (e) {
+        console.log(e);
+        errorInfo = e
+        res.redirect('/admin/login')
+    }
 })
 
 router.use('/dashboard', (req, res) => {
