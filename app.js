@@ -22,5 +22,5 @@ app.use(homeRoutes);
 
 
 
-app.listen(3000)
-console.log('run on port 3000')
+app.listen(80)
+console.log('run on port 80')
