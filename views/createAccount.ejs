@@ -10,11 +10,21 @@
 
 <body>
     <h3>Create Account</h3>
-    <form action="/admin/doCreateAccount" method="POST">
-        <input type="text" name="username" placeholder="Email">
+    <form action="/admin/createAccount" method="POST">
+        <input type="text" name="username" placeholder="Email" required>
         <br>
-        <input type="password" name="password" placeholder="Password">
+        <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Go</button>
+        <br />
+        <br />
+        <br />
+        <p>
+            <%= isSuccess %>
+        </p>
+        <br />
+        <p>
+            <%= response %>
+        </p>
     </form>
 </body>
 
